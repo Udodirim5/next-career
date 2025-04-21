@@ -1,14 +1,17 @@
 'use client';
 
-import { notFound } from "next/navigation";
-import { CompanyCard } from "@/components/company/card";
-import { JobActions } from "../actions";
-import { useStore } from "@/hooks/useJobStore";
+import { notFound, useParams } from 'next/navigation';
+import { CompanyCard } from '@/components/company/card';
+import { JobActions } from '../actions';
+import { useStore } from '@/hooks/useJobStore';
 
-export default function JobPage({ params }: { params: { id: string } }) {
-  const job = useStore((state) => state.jobs.find((j) => j.id === params.id));
+export default function JobPage() {
+  const params = useParams();
+  const jobId = params?.id as string;
 
-  if (!job) return notFound(); // If mock data isn't loaded, return 404
+  const job = useStore((state) => state.jobs.find((j) => j.id === jobId));
+
+  if (!job) return notFound();
 
   return (
     <div className="px-4 py-8">
@@ -53,7 +56,7 @@ export default function JobPage({ params }: { params: { id: string } }) {
 
             {/* Apply Button */}
             <div className="lg:hidden mt-8 sticky bottom-4">
-              <JobActions jobId={job.id} />
+              <JobActions/>
             </div>
           </div>
         </div>
@@ -61,7 +64,7 @@ export default function JobPage({ params }: { params: { id: string } }) {
         {/* Sidebar */}
         <div className="space-y-6">
           <div className="hidden lg:block sticky top-4">
-            <JobActions jobId={job.id} />
+            <JobActions />
           </div>
 
           <CompanyCard company={job.company} />

@@ -20,9 +20,10 @@ export function CompanyCard({ company }: CompanyCardProps) {
         {company.logo ? (
         <div className="relative h-12 w-12">
             <Image
-              src={company.logo}
+              src={company.logo?.startsWith("http")? company.logo : `/${company.name}`}
               alt={company.name}
               fill
+              loading="eager"
               className="h-12 w-12 rounded-md object-contain border"
             />
           </div>

@@ -2,16 +2,19 @@
 
 import { Button } from "@/components/ui/button";
 import { Bookmark, Share2 } from "lucide-react";
-// import { useSession } from "next-auth/react";
 import { toast } from "sonner";
-import { useSession } from "@/hooks/useSession";
+import { useStore } from "@/hooks/useJobStore";
+import { useParams } from "next/navigation";
 
 
-export function JobActions({ jobId }: { jobId: string }) {
-  // const { data: session } = useSession();
-  const { session, loading } = useSession();
+export function JobActions() {
+    const { user: session } = useStore();
+  const params = useParams();
+  const jobId = params?.id as string;
 
-  if (loading) return <p>Hold on…</p>;
+  const job = useStore((state) => state.jobs.find((j) => j.id === jobId));
+
+
 
   const handleApply = () => {
     if (!session) {
@@ -19,6 +22,7 @@ export function JobActions({ jobId }: { jobId: string }) {
       return;
     }
     toast.success("Application submitted!");
+    console.log(" Application submitted for job:", job);
     // TODO: Connect to DB
   };
 
@@ -28,6 +32,7 @@ export function JobActions({ jobId }: { jobId: string }) {
       return;
     }
     toast("Job saved to your profile");
+    console.log("Job saved:", job);
     // TODO: Connect to DB
   };
 

@@ -3,6 +3,7 @@
 import { Star, MapPin, Users, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useStore } from "@/hooks/useJobStore";
+import Image from "next/image";
 
 // Mock company data (replace with your store later)
 const mockCompanies = [
@@ -56,18 +57,26 @@ export default function CompaniesPage() {
 }
 
 // Company Card Component
-function CompanyCard({ company }: { company: typeof mockCompanies[0] }) {
+function CompanyCard({ company }: { company: (typeof mockCompanies)[0] }) {
   return (
     <div className="bg-white rounded-xl border p-6 hover:shadow-md transition-shadow">
       <div className="flex flex-col md:flex-row gap-6">
         {/* Company Logo */}
         <div className="flex-shrink-0">
           {company.logo ? (
-            <img
-              src={company.logo}
-              alt={company.name}
-              className="h-20 w-20 rounded-lg object-contain border"
-            />
+            <div className="relative h-12 w-12">
+              <Image
+                src={
+                  company.logo?.startsWith("http")
+                    ? company.logo
+                    : `/${company.name}`
+                }
+                alt={company.name}
+                fill
+                loading="eager"
+                className="h-20 w-20 rounded-lg object-contain border"
+              />
+            </div>
           ) : (
             <div className="h-20 w-20 rounded-lg bg-gray-100 flex items-center justify-center">
               <span className="text-xs text-gray-500">Logo</span>
@@ -82,7 +91,7 @@ function CompanyCard({ company }: { company: typeof mockCompanies[0] }) {
               <h2 className="text-xl font-bold">{company.name}</h2>
               <p className="text-gray-600">{company.description}</p>
             </div>
-            
+
             {/* Rating */}
             <div className="flex items-center gap-2 bg-gray-50 px-3 py-1 rounded-full">
               <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />

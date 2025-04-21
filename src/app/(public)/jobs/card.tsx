@@ -4,8 +4,6 @@ import { Clock, MapPin, Banknote } from "lucide-react";
 import Image from "next/image";
 import { Job } from "@/types";
 
-
-
 export function JobCard({ job }: { job: Job }) {
   return (
     <Link
@@ -18,11 +16,12 @@ export function JobCard({ job }: { job: Job }) {
           <p className="text-gray-600">{job.company.name}</p>
         </div>
         <div className="relative h-12 w-12">
-        {job.company.logo ? (
+          {job.company.logo ? (
             <Image
               src={job.company.logo}
               alt={job.company.name}
               fill
+              loading="eager"
               className="h-12 w-12 rounded-md object-contain border"
             />
           ) : (
